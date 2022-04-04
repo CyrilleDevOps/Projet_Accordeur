@@ -1,0 +1,2 @@
+interface new_accordeur {
+}

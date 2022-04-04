@@ -27,6 +27,7 @@ public class CaptureSon implements Runnable{
     private boolean isRec;
     private byte[] data;
     private double[] windowedData;
+    private double max; // Amplitude maximale de la FFT
     private double[] fft;
     private Son maxNote;
     private Son[] peaks;
@@ -166,6 +167,9 @@ public class CaptureSon implements Runnable{
     private void searchMaxInPeaks() {
         Son newMaxNote=new Son();
         Son updatedOldNote=null;
+        
+        
+        /*
         for(int i=0;i<peaks.length/2;i++) {
             if(peaks[i]!= null && peaks[i].getIntensity()>newMaxNote.getIntensity()) {
                 newMaxNote=peaks[i];
@@ -173,7 +177,7 @@ public class CaptureSon implements Runnable{
                 if(maxNote != null && maxNote.equals(peaks[i]))
                     updatedOldNote=peaks[i];
             }
-        }
+        }*/
 	        
 	        
         if((maxNote !=null && !maxNote.equals(newMaxNote)) || maxNote==null) {
@@ -197,7 +201,7 @@ public class CaptureSon implements Runnable{
 
     /**
      * Recherche le maximum de la FFT
-    
+    */
     private void searchMax() {
         double newMax=0;
         for(int i=0;i<fft.length/2;i++) {
@@ -206,7 +210,7 @@ public class CaptureSon implements Runnable{
             }
         }
         max=newMax;
-    }*/
+    }
 
     /**
      * Ajoute la FFT actuelle à l'historique et fait la moyenne temporelle des FFT
@@ -229,9 +233,9 @@ public class CaptureSon implements Runnable{
      * @param fft tableau de la FFT
      * @param parabolic Si vrai, interpolation parabolique, sinon renvoie l'indice du pic
      * @param threshold Valeur de seuil pour qu'un pic soit pris en compte
-     
+    
     private void peaksIndexation(double[] fft, boolean parabolic, double threshold) {
-        peaks=new HeardNote[fft.length];
+        peaks=new son[fft.length];
         for(int i=1;i<fft.length-1;i++) {
             if(fft[i]>threshold) {
                 if(fft[i-1]<fft[i] && fft[i+1]<fft[i]) {
@@ -333,14 +337,14 @@ public class CaptureSon implements Runnable{
         while(isRec) {
             getDataFromCapture();
             movingAverage(data);
-                
+                 
             windowedData=applyWindow(window,data);
             doFFT(windowedData);
             averageFFT();
             //searchMax();
-           // peaksIndexation(fft,true,(double)max/snr);
+           //peaksIndexation(fft,true,(double)max/snr);
            // getFundamental();
-           // searchMaxInPeaks();
+           searchMaxInPeaks();
             
         }
         

@@ -27,6 +27,8 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
 	public static int fe=44100; //Fréquence d'échantillonnage
 	public static Mixer.Info mi;
 	
+	private double[] fft;
+	
     private Box textPanel;
     
     private JLabel noteNameLabel, frequencyLabel;
@@ -43,17 +45,24 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     
     @Override
     public void actionPerformed(ActionEvent Evenement) {
+    	fft=FrequenceEcouter.getFFT();
+    	//fft=FrequenceEcouter.averageFFT();
     	note=FrequenceEcouter.getMaxNote();
-    	if(note!=null) {
-           	System.out.println("actionPerformed");
+    	//System.out.println("ecoute");
+    	//if(note!=null) {
+    	if(fft!=null) {
+           	//System.out.println(note.getFrequency());
            	           	
-           	noteNameLabel.setText((note.getFrequency()!=0) ? note.getSilence() : "Joue une note !");
+           	noteNameLabel.setText(fft+" Hz");
+           	//noteNameLabel.setText((note.getFrequency()!=0) ? note.getSilence() : "Joue une note !");
            	DecimalFormat FormatAffichageFrequence= new DecimalFormat("#.##");
-            frequencyLabel.setText(FormatAffichageFrequence.format(note.getFrequency())+" Hz");
+            //frequencyLabel.setText(FormatAffichageFrequence.format(note.getFrequency())+" Hz");
+           	frequencyLabel.setText(fft+" Hz");
             noteNameLabel.setForeground(new Color(0, 202, 0));
             frequencyLabel.setForeground(new Color(0, 202, 0));
             
             repaint();
+            
         }
 
     }

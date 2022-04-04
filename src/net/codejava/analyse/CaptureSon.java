@@ -20,17 +20,16 @@ public class CaptureSon implements Runnable{
     private int lastFFTindex;
     private int averagingFactor;
     private Mixer.Info mixerInfo;
-    private HeardNote waitingMaxNote;
+    private Son waitingMaxNote;
     private int freqStabilization;
     private double[] window;
     private EcouteMusique frequencyListener;
     private boolean isRec;
     private byte[] data;
     private double[] windowedData;
-    private double max; // Amplitude maximale de la FFT
     private double[] fft;
-    private HeardNote maxNote;
-    private HeardNote[] peaks;
+    private Son maxNote;
+    private Son[] peaks;
 	    
     public static double freqMin=60; //Seuil en fréquence de détection
     public static double snr=1.41; //Rapport signal sur bruit
@@ -57,7 +56,8 @@ public class CaptureSon implements Runnable{
      * @param fl Interface FrequencyListener
      */
     public CaptureSon(int cf, int s, int b, Mixer.Info mi, EcouteMusique fl) {
-        init(cf, s, b, mi);
+    	System.out.println("CaptureSon");
+    	init(cf, s, b, mi);
         addFrequencyListener(fl);
     }
 	
@@ -88,7 +88,7 @@ public class CaptureSon implements Runnable{
 	
     private void beginAudioCapture() {
         isRec=true;
-        
+        System.out.println("Début CaptureSon");
         // On définit un format audio
         AudioFormat format=new AudioFormat(captureFrequency,sampleSize,1,true,true);
         
@@ -160,11 +160,12 @@ public class CaptureSon implements Runnable{
     }
 	    
     /**
-     * Parcourt le tableau des pics et met à jour l'amplitude max (max), la fréquence correspondante (maxFreq) et l'indice du tableau de la FFT correspondant
-     */
+    /* Parcourt le tableau des pics et met à jour l'amplitude max (max), la fréquence correspondante (maxFreq) et l'indice du tableau de la FFT correspondant
+    */
+    
     private void searchMaxInPeaks() {
-        HeardNote newMaxNote=new HeardNote(0,0);
-        HeardNote updatedOldNote=null;
+        Son newMaxNote=new Son();
+        Son updatedOldNote=null;
         for(int i=0;i<peaks.length/2;i++) {
             if(peaks[i]!= null && peaks[i].getIntensity()>newMaxNote.getIntensity()) {
                 newMaxNote=peaks[i];
@@ -184,10 +185,10 @@ public class CaptureSon implements Runnable{
         if(waitingMaxNote != null && newMaxNote != null && waitingMaxNote.equals(newMaxNote)) {
             if(freqStabilization==nNotesWaited || updatedOldNote == null) {
                 if(maxNote!=null && !maxNote.equals(newMaxNote))
-                    fireNoteChanged();
+                    //fireNoteChanged();
                 maxNote=newMaxNote;
             } else {
-                maxNote.meanWith(updatedOldNote);
+                maxNote=(updatedOldNote);
                 freqStabilization++;
             }
             
@@ -196,7 +197,7 @@ public class CaptureSon implements Runnable{
 
     /**
      * Recherche le maximum de la FFT
-     */
+    
     private void searchMax() {
         double newMax=0;
         for(int i=0;i<fft.length/2;i++) {
@@ -205,7 +206,7 @@ public class CaptureSon implements Runnable{
             }
         }
         max=newMax;
-    }
+    }*/
 
     /**
      * Ajoute la FFT actuelle à l'historique et fait la moyenne temporelle des FFT
@@ -228,7 +229,7 @@ public class CaptureSon implements Runnable{
      * @param fft tableau de la FFT
      * @param parabolic Si vrai, interpolation parabolique, sinon renvoie l'indice du pic
      * @param threshold Valeur de seuil pour qu'un pic soit pris en compte
-     */
+     
     private void peaksIndexation(double[] fft, boolean parabolic, double threshold) {
         peaks=new HeardNote[fft.length];
         for(int i=1;i<fft.length-1;i++) {
@@ -239,7 +240,7 @@ public class CaptureSon implements Runnable{
                         /* Interpolation parabolique
                          *  /!\ avec fenêtrage gaussien /!\ */
 
-                        double alpha=Math.log(fft[i-1]);
+                     /*   double alpha=Math.log(fft[i-1]);
                         double beta=Math.log(fft[i]);
                         double gamma=Math.log(fft[i+1]);
                         double p = 0.5*(alpha-gamma)/(alpha-2*beta+gamma);
@@ -259,7 +260,7 @@ public class CaptureSon implements Runnable{
             }
         }
 		
-    }
+    } */
 	    
     /**
      * Crée une fenêtre gaussienne dans le tableau fourni en paramètre
@@ -296,7 +297,7 @@ public class CaptureSon implements Runnable{
     /**
      * Annule les harmoniques des pics trouvés...
      * Fatal en cas de bruit dans les faibles fréquences et inefficace contre les inharmonies
-     */
+    
     private void getFundamental() {
         for(int i=0;i<peaks.length;i++) {
             if(peaks[i]!=null) {
@@ -307,7 +308,7 @@ public class CaptureSon implements Runnable{
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Trouve la fréquence à partir de l'indice du tableau FFT
@@ -328,7 +329,7 @@ public class CaptureSon implements Runnable{
     @Override
     public void run() {
         beginAudioCapture();
-        
+        System.out.println("Start capturing...");
         while(isRec) {
             getDataFromCapture();
             movingAverage(data);
@@ -336,24 +337,15 @@ public class CaptureSon implements Runnable{
             windowedData=applyWindow(window,data);
             doFFT(windowedData);
             averageFFT();
-            searchMax();
-            peaksIndexation(fft,true,(double)max/snr);
-            getFundamental();
-            searchMaxInPeaks();
+            //searchMax();
+           // peaksIndexation(fft,true,(double)max/snr);
+           // getFundamental();
+           // searchMaxInPeaks();
             
         }
         
         line.stop();
         line.close();
-    }
-    
-    /**
-     * la méthode permettant de séparer des notes utilisée pour pouvoir ensuite afficher les notes dans le scorePanel
-     **/
-    private void fireNoteChanged() {
-        if(frequencyListener!=null) {
-            frequencyListener.onNewNote(maxNote);
-        }
     }
     
     /**
@@ -368,6 +360,7 @@ public class CaptureSon implements Runnable{
      * Enclenche l'arrêt de l'enregistrement (donc du thread)
      */
     public void stopRecording() {
+        System.out.println("Stop capturing...");
         isRec=false;
     }
     
@@ -392,7 +385,7 @@ public class CaptureSon implements Runnable{
      * Retourne la note convenue comme fondamentale (d'amplitude maximale)
      * @return la note fondamentale
      */
-    public HeardNote getMaxNote() {
+    public Son getMaxNote() {
         return maxNote;
     }
     
@@ -400,7 +393,7 @@ public class CaptureSon implements Runnable{
      * Retourne l'ensemble des pics de la FFT
      * @return le tableau des pics
      */
-    public HeardNote[] getPeaks() {
+    public Son[] getPeaks() {
         return peaks;
     }
 }

@@ -1,5 +1,7 @@
 package net.codejava.start;
 
+import net.codejava.fenetre.*;
+
 
 import javax.swing.JFrame;
 
@@ -30,21 +32,22 @@ import javax.swing.*;
 	        MenuPrincipal FenetreDemarrage = new MenuPrincipal();
 	        FenetreDemarrage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Pour permettre la fermeture de la fenêtre lors de l'appui sur la croix rouge
 			
-	      /*      boolean found=false;
+	            boolean found=false;
 	            Mixer.Info[] mixers = AudioSystem.getMixerInfo();
 	            for(int i=0; i<mixers.length; i++) {
 	                Mixer mi = AudioSystem.getMixer(mixers[i]);
 	                Line.Info[] lines = mi.getTargetLineInfo();
 	                for (int j=0;j<lines.length; j++){
 	                    if(lines[j].getLineClass()==TargetDataLine.class){
-	                        //TunerWindow.mi=mixers[i];
+	                    	System.out.println("Init PanelCaptureSon");
+	                        PanelCaptureSon.mi=mixers[i];
 	                        break;
 	                    }
 	                }
 
 	                if(found) break;
 	            }
-	       */
+	       
 	    }
 	    
 	}

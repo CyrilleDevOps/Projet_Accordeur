@@ -18,7 +18,7 @@ import javax.sound.sampled.*;
  *
  * @author ScoriusTeam
  */
-public class Menu extends JFrame implements ActionListener,EcouteMusique {
+public class Menu extends JFrame implements ActionListener {
 	
     // Choix & actions possibles
 
@@ -94,10 +94,5 @@ public class Menu extends JFrame implements ActionListener,EcouteMusique {
        */
     } 
 	  
-    @Override
-    public void onNewNote(HeardNote n) {
-        //score.add(n); //on dessine alors la nouvelle note dans le scorePanel
-    }
-
-}
+ }
 

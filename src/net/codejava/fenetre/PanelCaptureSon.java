@@ -18,20 +18,20 @@ import javax.swing.*;
 public class PanelCaptureSon extends JFrame implements ActionListener,WindowListener {
 	
 	// Début Declaration
-	private HeardNote Note; //la note captée par le micro
+	
+	private Son note; //la son captée par le micro
     private CaptureSon FrequenceEcouter; //la fréquence détectée par le micro
-    private Thread th;
+    private Thread ThreadSon;
 	
 	public static int FPS=30; // le nombre d'images par seconde
 	public static int fe=44100; //Fréquence d'échantillonnage
 	public static Mixer.Info mi;
 	
     private Box textPanel;
+    
     private JLabel noteNameLabel, frequencyLabel;
-    //private TunerGraduationsPanel tunerPanel;
-    //private FFTPanel fftPanel;
-    //private SignalViewerPanel signalPanel;
 
+    
     //Fin Déclaration
 	
     // Ouvre une fenetre pour l'accordeur
@@ -43,27 +43,31 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     
     @Override
     public void actionPerformed(ActionEvent Evenement) {
-    	Note=FrequenceEcouter.getMaxNote();
-        if(Note!=null) {
-            //tunerPanel.Note=Note;
-            //noteNameLabel.setText((Note.getFrequency()!=0) ? Note.getName() : "Joue une note !");
-        }
-            DecimalFormat FormatAffichage= new DecimalFormat("#.##");
-            frequencyLabel.setText(FormatAffichage.format(Note.getFrequency())+" Hz");
-            //if(FrequenceEcouter.getWindowedData()!=null) signalPanel.data=FrequenceEcouter.getWindowedData();
+    	note=FrequenceEcouter.getMaxNote();
+    	if(note!=null) {
+           	System.out.println("actionPerformed");
+           	           	
+           	noteNameLabel.setText((note.getFrequency()!=0) ? note.getSilence() : "Joue une note !");
+           	DecimalFormat FormatAffichageFrequence= new DecimalFormat("#.##");
+            frequencyLabel.setText(FormatAffichageFrequence.format(note.getFrequency())+" Hz");
+            noteNameLabel.setForeground(new Color(0, 202, 0));
+            frequencyLabel.setForeground(new Color(0, 202, 0));
             
-            //repaint();
+            repaint();
+        }
+
     }
     
     
     private void init() { //pour Ã©viter de mettre des fonctions surchargeables telles setSize() dans le constructeur
-                
-    	Note=new HeardNote(0);
+          
+    	System.out.println("Init Accordeur");
+    	
+    	// On initialise la fequence
     	FrequenceEcouter=new CaptureSon(fe,8,fe/8,mi);
-    	
-    	
+    	    	
     	// On set la taille de la fenÃªtre et on affiche les bordures
-       setSize(500,750);
+       setSize(400,300);
        setUndecorated(false);
         
         // Un timer pour rafraÃ®chir l'affichage
@@ -82,68 +86,29 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
 		textPanel.setBackground(Color.white);
 		textPanel.setOpaque(true);
 		
-		// Le JLabel qui contiendra le nom de la note
+		// Le JLabel qui indiquera si il y a capture de on ou un silence
 		noteNameLabel=new JLabel("Joue une note ! ",SwingConstants.CENTER);
 		noteNameLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
 		addCenteredPanel(noteNameLabel,textPanel);
 		
 		// Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
-		
 		frequencyLabel=new JLabel("0 Hz",SwingConstants.CENTER);
 		frequencyLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,10)); // Petite police
 		addCenteredPanel(frequencyLabel,textPanel);
 		
 		addCenteredPanel(textPanel,verticalBox);
-		
-		verticalBox.add(Box.createRigidArea(new Dimension(0,20)));
-		
-		
-		
-		/* ********************************************************
-		         GRADUATIONS
-		******************************************************** */
-		
-		addCenteredPanel(new JLabel("Accordage"),verticalBox);
-		// On dÃ©clare le JPanel Tuner
-		
-		//tunerPanel=new TunerGraduationsPanel();
-		//addCenteredPanel(tunerPanel,verticalBox);
-		
-		verticalBox.add(Box.createRigidArea(new Dimension(0,20)));
-		
-		
-		
-		/* ********************************************************
-		         SPECTRE
-		******************************************************** */
-		addCenteredPanel(new JLabel("Spectre (FFT)"),verticalBox);
-		// On dÃ©clare le JPanel FFTPanel
-		//fftPanel=new FFTPanel(fd);
-		//addCenteredPanel(fftPanel,verticalBox);
-		
-		verticalBox.add(Box.createRigidArea(new Dimension(0,20)));
-		
-		
-		/* ********************************************************
-        SIGNAL
-		******************************************************** */
-		addCenteredPanel(new JLabel("Signal d'entrÃ©e"),verticalBox);
-		// On dÃ©clare le JPanel Signal
-		//signalPanel=new SignalViewerPanel();
-		//addCenteredPanel(signalPanel,verticalBox);
-		
-		verticalBox.add(Box.createRigidArea(new Dimension(0,20)));
-		
-		
+		   
+	    		
 		Box horizontalBox=Box.createHorizontalBox();
 		horizontalBox.add(Box.createRigidArea(new Dimension(20,0)));
 		horizontalBox.add(verticalBox);
 		horizontalBox.add(Box.createRigidArea(new Dimension(20,0)));
-		
-		
+				
 		add(horizontalBox);
 		
-		//addWindowListener(this);
+				
+		//activation lisener
+		addWindowListener(this);
 		
 		// Affichage de la fenÃªtre
         setVisible(true);
@@ -169,13 +134,14 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
 	
     @Override
     public void windowActivated(WindowEvent w) {
-        th=new Thread(FrequenceEcouter);
-        th.start();
+    	System.out.println("Active Window");
+    	ThreadSon=new Thread(FrequenceEcouter);
+    	ThreadSon.start();
     }
     
     @Override
     public void windowClosing(WindowEvent w) {
-        th.interrupt();
+    	ThreadSon.interrupt();
     }
 	
     @Override

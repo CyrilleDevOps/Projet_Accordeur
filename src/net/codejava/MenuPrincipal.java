@@ -1,4 +1,4 @@
-package net.codejava.fenetre;
+//package net.codejava.fenetre;
 
 	/**
 	 * Mise en place du menu principal

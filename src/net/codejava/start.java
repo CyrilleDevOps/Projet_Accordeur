@@ -1,6 +1,6 @@
-package net.codejava.start;
+//package net.codejava.start;
 
-import net.codejava.fenetre.*;
+//import net.codejava.fenetre.*;
 
 
 import javax.swing.JFrame;

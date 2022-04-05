@@ -1,7 +1,7 @@
-package net.codejava.fenetre;
+//package net.codejava.fenetre;
 
-import net.codejava.actions.*;
-import net.codejava.analyse.*;
+//import net.codejava.actions.*;
+//import net.codejava.analyse.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

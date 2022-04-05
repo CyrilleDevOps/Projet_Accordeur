@@ -5,7 +5,7 @@
 
 import javax.swing.JFrame;
 
-import net.codejava.fenetre.MenuPrincipal;
+//import net.codejava.fenetre.MenuPrincipal;
 
 import javax.swing.*;
 	import javax.sound.sampled.*;

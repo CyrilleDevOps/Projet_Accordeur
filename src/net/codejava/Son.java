@@ -31,24 +31,24 @@ public class Son extends Note {
     }
 
 	 /**
-     * Retourne l'intensité de la note
-     * @return intensité sous forme de double positif
+     * Retourne l'intensitÃ© de la note
+     * @return intensitÃ© sous forme de double positif
      */
     public double getIntensity() {
         return intensity;
     }
     
     /**
-     * Retourne la fréquence de la Note
-     * @return fréquence sous forme de double
+     * Retourne la frÃ©quence de la Note
+     * @return frÃ©quence sous forme de double
      */
     public double getFrequency() {
         return frequency;
     }
 	
     /**
-    * Retourne la fréquence de la Note
-    * @return fréquence sous forme de double
+    * Retourne la frÃ©quence de la Note
+    * @return frÃ©quence sous forme de double
     */
    public String getSilence() {
 	   String s;

@@ -5,9 +5,20 @@ public class Son {
 	protected final double intensity;
 	protected double frequency;
 	
-	public Son() {
+	/**
+     * Fréquence du La de référence
+     */
+    public static int aFreqRef=440; 
+	
+    public Son() {
 		intensity=0;
+		
 	}
+	
+	public Son(double freq, double i) {
+        intensity=i;
+        initWithFreq(freq);
+    }
 
 	 /**
      * Retourne l'intensité de la note
@@ -38,7 +49,10 @@ public class Son {
        return s;
    }
    
-   
+   private void initWithFreq(double f) {
+       frequency=f;      
+
+   }
    
    
 	

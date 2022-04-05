@@ -161,15 +161,11 @@ public class CaptureSon implements Runnable{
     }
 	    
     /**
-    /* Parcourt le tableau des pics et met à jour l'amplitude max (max), la fréquence correspondante (maxFreq) et l'indice du tableau de la FFT correspondant
-    */
-    
+     * Parcourt le tableau des pics et met à jour l'amplitude max (max), la fréquence correspondante (maxFreq) et l'indice du tableau de la FFT correspondant
+     */
     private void searchMaxInPeaks() {
-        Son newMaxNote=new Son();
+        Son newMaxNote=new Son(0,0);
         Son updatedOldNote=null;
-        
-        
-        /*
         for(int i=0;i<peaks.length/2;i++) {
             if(peaks[i]!= null && peaks[i].getIntensity()>newMaxNote.getIntensity()) {
                 newMaxNote=peaks[i];
@@ -177,28 +173,37 @@ public class CaptureSon implements Runnable{
                 if(maxNote != null && maxNote.equals(peaks[i]))
                     updatedOldNote=peaks[i];
             }
-        }*/
-	        
-	        
+        }
+        
+        
         if((maxNote !=null && !maxNote.equals(newMaxNote)) || maxNote==null) {
             waitingMaxNote=newMaxNote;
             freqStabilization=0;
         }
-	        
-	       
+        
+       
         if(waitingMaxNote != null && newMaxNote != null && waitingMaxNote.equals(newMaxNote)) {
             if(freqStabilization==nNotesWaited || updatedOldNote == null) {
                 if(maxNote!=null && !maxNote.equals(newMaxNote))
-                    //fireNoteChanged();
+                    fireNoteChanged();
                 maxNote=newMaxNote;
             } else {
-                maxNote=(updatedOldNote);
+                //maxNote.meanWith(updatedOldNote);
                 freqStabilization++;
             }
             
         }
     }
-
+    /**
+     * la méthode permettant de séparer des notes utilisée pour pouvoir ensuite afficher les notes dans le scorePanel
+     **/
+    private void fireNoteChanged() {
+        if(frequencyListener!=null) {
+            frequencyListener.onNewNote(maxNote);
+        }
+    }
+  
+    
     /**
      * Recherche le maximum de la FFT
     */
@@ -233,9 +238,9 @@ public class CaptureSon implements Runnable{
      * @param fft tableau de la FFT
      * @param parabolic Si vrai, interpolation parabolique, sinon renvoie l'indice du pic
      * @param threshold Valeur de seuil pour qu'un pic soit pris en compte
-    
+     */
     private void peaksIndexation(double[] fft, boolean parabolic, double threshold) {
-        peaks=new son[fft.length];
+        peaks=new Son[fft.length];
         for(int i=1;i<fft.length-1;i++) {
             if(fft[i]>threshold) {
                 if(fft[i-1]<fft[i] && fft[i+1]<fft[i]) {
@@ -244,7 +249,7 @@ public class CaptureSon implements Runnable{
                         /* Interpolation parabolique
                          *  /!\ avec fenêtrage gaussien /!\ */
 
-                     /*   double alpha=Math.log(fft[i-1]);
+                        double alpha=Math.log(fft[i-1]);
                         double beta=Math.log(fft[i]);
                         double gamma=Math.log(fft[i+1]);
                         double p = 0.5*(alpha-gamma)/(alpha-2*beta+gamma);
@@ -253,10 +258,10 @@ public class CaptureSon implements Runnable{
                         
                         // On n'ajoute aux peaks que si la fréquence détectée est supérieure au seuil
                         if(freq > freqMin)
-                            peaks[i]=new HeardNote(freq,Math.exp(beta-0.25*(alpha-gamma)*p));
+                            peaks[i]=new Son(freq,Math.exp(beta-0.25*(alpha-gamma)*p));
                         
                     } else {
-                        peaks[i]=new HeardNote(indexToFreq(i),fft[i]);
+                        peaks[i]=new Son(indexToFreq(i),fft[i]);
                     }
                 } else {
                     peaks[i]=null;
@@ -264,7 +269,7 @@ public class CaptureSon implements Runnable{
             }
         }
 		
-    } */
+    }
 	    
     /**
      * Crée une fenêtre gaussienne dans le tableau fourni en paramètre
@@ -289,30 +294,7 @@ public class CaptureSon implements Runnable{
         return newWindowedData;
     }
 
-    /**
-     * Calcule la moyenne glissante d'un signal
-     * @param data le signal à moyenner
-     */
-    private void movingAverage(byte[] data) {
-        for(int i=1;i<data.length;i++)
-            data[i]=(byte)((data[i]+data[i-1])/2);
-    }
-
-    /**
-     * Annule les harmoniques des pics trouvés...
-     * Fatal en cas de bruit dans les faibles fréquences et inefficace contre les inharmonies
-    
-    private void getFundamental() {
-        for(int i=0;i<peaks.length;i++) {
-            if(peaks[i]!=null) {
-                for(int j=i+1;j<peaks.length;j++) {
-                    if(peaks[j]!=null && peaks[j].getNoteID()==peaks[i].getNoteID()) {
-                        peaks[j]=null;
-                    }
-                }
-            }
-        }
-    }*/
+ 
 
     /**
      * Trouve la fréquence à partir de l'indice du tableau FFT
@@ -336,13 +318,13 @@ public class CaptureSon implements Runnable{
         System.out.println("Start capturing...");
         while(isRec) {
             getDataFromCapture();
-            movingAverage(data);
+            //movingAverage(data);
                  
             windowedData=applyWindow(window,data);
             doFFT(windowedData);
-            averageFFT();
+            //averageFFT();
             //searchMax();
-           //peaksIndexation(fft,true,(double)max/snr);
+           peaksIndexation(fft,true,(double)max/snr);
            // getFundamental();
            searchMaxInPeaks();
             

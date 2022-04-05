@@ -1,4 +1,4 @@
-package net.codejava.analyse;
+//package net.codejava.analyse;
 
 import net.codejava.start.Constantes;
 

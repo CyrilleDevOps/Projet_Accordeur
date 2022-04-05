@@ -1,5 +1,5 @@
-package net.codejava.actions;
-import net.codejava.analyse.*;
+//package net.codejava.actions;
+//import net.codejava.analyse.*;
 
 public interface EcouteMusique {
 	

@@ -1,6 +1,6 @@
-package net.codejava.analyse;
+//package net.codejava.analyse;
 
-import net.codejava.actions.*;
+//import net.codejava.actions.*;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;

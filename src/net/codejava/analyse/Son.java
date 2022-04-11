@@ -1,6 +1,6 @@
 package net.codejava.analyse;
 
-public class Son {
+public class Son extends Note {
 	
 	protected final double intensity;
 	protected double frequency;
@@ -15,9 +15,19 @@ public class Son {
 		
 	}
 	
+    public Son(double freq) {
+    	super(freq);
+    	intensity=0;
+    	frequency=freq;
+    	System.out.println("x- Init Son");
+    }
+    
+    
 	public Son(double freq, double i) {
-        intensity=i;
-        initWithFreq(freq);
+		super(freq);
+		intensity=i;
+		frequency=freq;
+		System.out.println("x- Init Son");
     }
 
 	 /**
@@ -47,11 +57,6 @@ public class Son {
        else 
            s="#";  
        return s;
-   }
-   
-   private void initWithFreq(double f) {
-       frequency=f;      
-
    }
    
    

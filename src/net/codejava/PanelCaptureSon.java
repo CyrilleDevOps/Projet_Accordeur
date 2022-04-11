@@ -17,14 +17,14 @@ import javax.swing.*;
 
 public class PanelCaptureSon extends JFrame implements ActionListener,WindowListener {
 	
-	// D�but Declaration
+	// Début Declaration
 	
-	private Son note; //la son capt�e par le micro
-    private CaptureSon FluxEcouter; //la fr�quence d�tect�e par le micro
+	private Son note; //la son captée par le micro
+    private CaptureSon FluxEcouter; //la fréquence détectée par le micro
     private Thread ThreadSon;
 	
 	public static int FPS=30; // le nombre d'images par seconde
-	public static int FrequenceEchantillonage=44100; //Fr�quence d'�chantillonnage
+	public static int FrequenceEchantillonage=44100; //Fréquence d'échantillonnage
 	public static int frequence; 
 	public static Mixer.Info mi;
 	
@@ -35,7 +35,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     private JLabel noteNameLabel, frequencyLabel;
 
     
-    //Fin D�claration
+    //Fin Déclaration
 	
     // Ouvre une fenetre pour l'accordeur
     public PanelCaptureSon() {
@@ -69,18 +69,18 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     }
     
     
-    private void init() { //pour éviter de mettre des fonctions surchargeables telles setSize() dans le constructeur
+    private void init() { //pour Ã©viter de mettre des fonctions surchargeables telles setSize() dans le constructeur
           
     	System.out.println("1-Mise en ecoute");
     	
     	// On initialise la fequence
     	FluxEcouter=new CaptureSon(FrequenceEchantillonage,8,FrequenceEchantillonage/8,mi);
     	    	
-    	// On set la taille de la fenêtre et on affiche les bordures
+    	// On set la taille de la fenÃªtre et on affiche les bordures
        setSize(400,300);
        setUndecorated(false);
         
-        // Un timer pour rafraîchir l'affichage
+        // Un timer pour rafraÃ®chir l'affichage
         Timer timer = new Timer(1000/FPS, this);
         timer.start();
         
@@ -101,7 +101,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
         noteNameLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(noteNameLabel,textPanel);
         
-        // Le petit JLabel juste en dessous qui contient la fr�quence d�tect�e
+        // Le petit JLabel juste en dessous qui contient la fréquence détectée
         frequencyLabel=new JLabel("0 Hz",SwingConstants.CENTER);
         frequencyLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,10)); // Petite police
         addCenteredPanel(frequencyLabel,textPanel);
@@ -120,7 +120,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
 		//activation lisener
 		addWindowListener(this);
 		
-		// Affichage de la fenêtre
+		// Affichage de la fenÃªtre
         setVisible(true);
     }
     
@@ -145,7 +145,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     @Override
     public void windowActivated(WindowEvent w) {
     	System.out.println("2-Active Window");
-    	System.out.println("2-D�but ecoute Lancement du Flux");
+    	System.out.println("2-Début ecoute Lancement du Flux");
     	ThreadSon=new Thread(FluxEcouter);
     	ThreadSon.start();
     }

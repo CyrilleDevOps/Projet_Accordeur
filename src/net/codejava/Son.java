@@ -1,6 +1,6 @@
 //package net.codejava.analyse;
 
-import net.codejava.start.Constantes;
+//import net.codejava.start.Constantes;
 
 public class Son extends Note {
 	

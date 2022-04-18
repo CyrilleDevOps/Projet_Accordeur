@@ -1,4 +1,4 @@
-package net.codejava.start;
+//package net.codejava.start;
 
 public final class Constantes {
 	// DEBUG =0 ou 1

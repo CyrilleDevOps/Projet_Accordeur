@@ -1,8 +1,8 @@
-package net.codejava.fenetre;
+//package net.codejava.fenetre;
 
-import net.codejava.actions.*;
-import net.codejava.analyse.*;
-import net.codejava.start.Constantes;
+//import net.codejava.actions.*;
+//import net.codejava.analyse.*;
+//import net.codejava.start.Constantes;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -18,14 +18,14 @@ import javax.swing.*;
 
 public class PanelCaptureSon extends JFrame implements ActionListener,WindowListener {
 	
-	// Début Declaration
+	// DÃ©but Declaration
 	
-	private Son note; //la son capté par le micro
-    private CaptureSon FluxEcouter; //la fréquence détectée par le micro
+	private Son note; //la son captÃ© par le micro
+    private CaptureSon FluxEcouter; //la frÃ©quence dÃ©tectÃ©e par le micro
     private Thread ThreadSon; // le flux Audio
 	
 	public static int FPS=30; // le nombre d'images par seconde
-	public static int FrequenceEchantillonage=44100; //Fréquence d'échantillonnage
+	public static int FrequenceEchantillonage=44100; //FrÃ©quence d'Ã©chantillonnage
 	public static int frequence; 
 	public static Mixer.Info mi; //Audio Device
 	
@@ -39,7 +39,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     private JLabel noteNameLabel, frequencyLabel, octaveLabel, ecartLabel;
 
     
-    //Fin Déclaration
+    //Fin DÃ©claration
 	
   
         // Ouvre une fenetre pour l'accordeur
@@ -85,7 +85,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     }
     
     
-    private void init() { //pour Ã©viter de mettre des fonctions surchargeables telles setSize() dans le constructeur
+    private void init() { //pour ÃƒÂ©viter de mettre des fonctions surchargeables telles setSize() dans le constructeur
           
     	if (Constantes.DEBUG==1) {System.out.println("1-Mise en ecoute");
     	}
@@ -93,11 +93,11 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     	// On initialise la fequence
     	FluxEcouter=new CaptureSon(FrequenceEchantillonage,8,FrequenceEchantillonage/8,mi);
     	    	
-    	// On set la taille de la fenÃªtre et on affiche les bordures
+    	// On set la taille de la fenÃƒÂªtre et on affiche les bordures
        setSize(400,600);
        setUndecorated(false);
         
-        // Un timer pour rafraÃ®chir l'affichage
+        // Un timer pour rafraÃƒÂ®chir l'affichage
         Timer timer = new Timer(1000/FPS, this);
         timer.start();
         
@@ -123,12 +123,12 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
         /* ********************************************************
         FREQUENCE
 		******************************************************** */
-        addCenteredPanel(new JLabel("Fréquence"),verticalBox);
+        addCenteredPanel(new JLabel("FrÃ©quence"),verticalBox);
         textPanel2=Box.createVerticalBox();
         textPanel2.setBackground(Color.white);
         textPanel2.setOpaque(true);
         
-        // Le petit JLabel juste en dessous qui contient la fréquence détectée
+        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
         frequencyLabel=new JLabel("0 Hz",SwingConstants.CENTER);
         frequencyLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(frequencyLabel,textPanel2);
@@ -143,7 +143,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
         textPanel3.setBackground(Color.white);
         textPanel3.setOpaque(true);
         
-        // Le petit JLabel juste en dessous qui contient la fréquence détectée
+        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
         octaveLabel=new JLabel("0 ",SwingConstants.CENTER);
         octaveLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(octaveLabel,textPanel3);
@@ -158,7 +158,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
         textPanel4.setBackground(Color.white);
         textPanel4.setOpaque(true);
         
-        // Le petit JLabel juste en dessous qui contient la fréquence détectée
+        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
         ecartLabel=new JLabel("0 ",SwingConstants.CENTER);
         ecartLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(ecartLabel,textPanel4);
@@ -177,7 +177,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
 		//activation lisener
 		addWindowListener(this);
 		
-		// Affichage de la fenÃªtre
+		// Affichage de la fenÃƒÂªtre
         setVisible(true);
     }
     
@@ -203,7 +203,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     public void windowActivated(WindowEvent w) {
     	if (Constantes.DEBUG==1) {
     		System.out.println("2-Active Window");
-    		System.out.println("2-Début ecoute Lancement du Flux");
+    		System.out.println("2-DÃ©but ecoute Lancement du Flux");
     	}
     	ThreadSon=new Thread(FluxEcouter);
     	ThreadSon.start();

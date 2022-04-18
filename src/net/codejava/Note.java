@@ -1,15 +1,15 @@
-package net.codejava.analyse;
+//package net.codejava.analyse;
 
 import javax.sound.sampled.*;
 
-import net.codejava.start.Constantes;
+//import net.codejava.start.Constantes;
 
 import java.io.*;
 
 public class Note {
 	
 	protected double [] notes = {110 , 116.55, 123.47 , 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65};
-	protected String [] nom= {"La" , "Sib", "Si" , "Do", "Do#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol","Sol#"};
+	protected String [] nom= {"La" , "Sib", "Si" , "Do", "Do#", "RÃ©", "RÃ©#", "Mi", "Fa", "Fa#", "Sol","Sol#"};
 	protected int indexNote=0; 
 	protected int octave=0; //
 	protected double ecart=5;
@@ -80,29 +80,29 @@ public class Note {
         }
 
         /**
-         * Retourne le numéro de la note (0 : La, 1 : Si, 2 : Do, etc)
-         * @return le numéro de la note
+         * Retourne le numÃ©ro de la note (0 : La, 1 : Si, 2 : Do, etc)
+         * @return le numÃ©ro de la note
          */
         public int getNoteID() { 
             return indexNote;
         }
         	
-        //renvoi la note la plus proche, l'octave à laquelle elle est jouée et l'écart en Hz
+        //renvoi la note la plus proche, l'octave Ã  laquelle elle est jouÃ©e et l'Ã©cart en Hz
         public double  GetNote () {  
         	return notes[indexNote];
         }
         
-        //renvoi la note la plus proche, l'octave à laquelle elle est jouée et l'écart en Hz
+        //renvoi la note la plus proche, l'octave Ã  laquelle elle est jouÃ©e et l'Ã©cart en Hz
         public String  GetNomNote () {  
         	return nom[indexNote];
         }
 
-        //renvoi la note la plus proche, l'octave à laquelle elle est jouée et l'écart en Hz
+        //renvoi la note la plus proche, l'octave Ã  laquelle elle est jouÃ©e et l'Ã©cart en Hz
         public double  GetEcartNote () {  
         	return ecart;
         }
         
-        //renvoi la note la plus proche, l'octave à laquelle elle est jouée et l'écart en Hz
+        //renvoi la note la plus proche, l'octave Ã  laquelle elle est jouÃ©e et l'Ã©cart en Hz
         public double  GetOctaveNote () {  
         	return octave;
         }

@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 //import net.codejava.fenetre.MenuPrincipal;
 
 import javax.swing.*;
-	import javax.sound.sampled.*;
+import javax.sound.sampled.*;
 
 	/**
 	 *
@@ -18,6 +18,7 @@ import javax.swing.*;
 
 	    //Version 
 		private static final long serialVersionUID = 01;
+		
 
 	    public static void main(String[] args) {
 	        //FontUtils.importFont("Bravura.otf");
@@ -32,6 +33,7 @@ import javax.swing.*;
 	        MenuPrincipal FenetreDemarrage = new MenuPrincipal();
 	        FenetreDemarrage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Pour permettre la fermeture de la fenêtre lors de l'appui sur la croix rouge
 			
+	        
 	            boolean found=false;
 	            Mixer.Info[] mixers = AudioSystem.getMixerInfo();
 	            for(int i=0; i<mixers.length; i++) {
@@ -39,15 +41,17 @@ import javax.swing.*;
 	                Line.Info[] lines = mi.getTargetLineInfo();
 	                for (int j=0;j<lines.length; j++){
 	                    if(lines[j].getLineClass()==TargetDataLine.class){
-	                    	System.out.println("Init PanelCaptureSon");
+	                    	if (Constantes.DEBUG==1) {System.out.println("00- Cherche Sound Device");
+	                    	}
 	                        PanelCaptureSon.mi=mixers[i];
+	                        PanelCaptureAccord.miAccord=mixers[i];
 	                        break;
 	                    }
 	                }
 
 	                if(found) break;
 	            }
-	       
+	      
 	    }
 	    
 	}

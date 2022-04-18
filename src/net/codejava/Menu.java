@@ -70,19 +70,7 @@ public class Menu extends JFrame implements ActionListener {
         } else if(source == bouton1) {
         	 new PanelCaptureSon();
         } else if(source == boutonEnregistrement) {
-            if(!stateRecording) {
-                // On intialise le Thread du FrequencyDetector
-                //fd=new FrequencyDetector(TunerWindow.fe,8,TunerWindow.fe/8,TunerWindow.mi,this); //indispensable de le mettre ici car comme ça fd sera instancié à chaque fois avec les nouveaux paramètres
-                //th=new Thread(fd);
-                //th.start();
-            	boutonEnregistrement.setText("Stop");
-                stateRecording=true;
-            } else {
-                //fd.stopRecording();
-                //th.interrupt();
-            	boutonEnregistrement.setText("Enregistrement");
-                stateRecording=false;
-            }
+        	new PanelCaptureAccord();
         }
  
         /*

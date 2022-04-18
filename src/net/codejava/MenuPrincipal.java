@@ -15,7 +15,7 @@ import java.awt.Dimension;
 
 
 	    /**
-	     * Création et ouverture du Menu principal
+	     * CrÃ©ation et ouverture du Menu principal
 	     */
 	    public MenuPrincipal() {
 	        init();
@@ -60,9 +60,9 @@ import java.awt.Dimension;
 	        PanelBoutons.setMaximumSize(new Dimension(Integer.MAX_VALUE,200));
 	        
 	        //Ajout des boutons
-	        // buttonTuner : Le bouton pour accéder à l'accordeur
+	        // buttonTuner : Le bouton pour accÃ©der Ã  l'accordeur
 	        bouton1 = new JButton();
-	        bouton1.setText("Bouton 1");
+	        bouton1.setText("Accordeur");
 	        bouton1.setBackground(new Color(10, 144, 10));
 	        bouton1.setForeground(Color.black);
 	        bouton1.addActionListener(this);
@@ -70,7 +70,7 @@ import java.awt.Dimension;
 	        
 	        // buttonRecord : Le bouton pour enregistrer
 	        boutonEnregistrement = new JButton();
-	        boutonEnregistrement.setText("Enregistrement");
+	        boutonEnregistrement.setText("Accords");
 	        boutonEnregistrement.setBackground(new Color(10, 144, 10));
 	        boutonEnregistrement.setForeground(Color.black);
 	        boutonEnregistrement.addActionListener(this);

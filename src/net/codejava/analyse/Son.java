@@ -1,5 +1,7 @@
 package net.codejava.analyse;
 
+import net.codejava.start.Constantes;
+
 public class Son extends Note {
 	
 	protected final double intensity;
@@ -19,7 +21,8 @@ public class Son extends Note {
     	super(freq);
     	intensity=0;
     	frequency=freq;
-    	System.out.println("x- Init Son");
+    	if (Constantes.DEBUG==1) {System.out.println("x- Init Son");
+    	}
     }
     
     
@@ -27,7 +30,8 @@ public class Son extends Note {
 		super(freq);
 		intensity=i;
 		frequency=freq;
-		System.out.println("x- Init Son");
+		if (Constantes.DEBUG==1) {System.out.println("x- Init Son");
+		}
     }
 
 	 /**

@@ -1,6 +1,7 @@
 package net.codejava.analyse;
 
 import net.codejava.actions.*;
+import net.codejava.start.Constantes;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +30,7 @@ public class CaptureSon implements Runnable{
     private double[] signalAanalyser;
     private double max; // Amplitude maximale de la FFT
     private double[] fft;
-    private Son NoteFondamentale;
+    private Son NoteFondamentale = null;
     private Son[] peaks;
 	    
     public static double freqMin=60; //Seuil en fréquence de détection
@@ -63,7 +64,8 @@ public class CaptureSon implements Runnable{
 	
     private void init(int cf, int s, int b, Mixer.Info mi) {
 
-    	System.out.println("1.1 Initialize les données pour la capture");
+    	if (Constantes.DEBUG==1) {System.out.println("1.1 Initialize les données pour la capture");
+    	}
     	// Copie des attributs
 	    captureFrequency=cf;
 	    sampleSize=s;
@@ -90,7 +92,8 @@ public class CaptureSon implements Runnable{
 	
     private void beginAudioCapture() {
         isRec=true;
-        System.out.println("2.2 Init CaptureSon");
+    	if (Constantes.DEBUG==1) {System.out.println("2.2 Init CaptureSon");
+    	}
         // On définit un format audio
         AudioFormat format=new AudioFormat(captureFrequency,sampleSize,1,true,true);
         
@@ -99,8 +102,8 @@ public class CaptureSon implements Runnable{
         
         // Si la ligne n'est pas supportée, on renvoie une erreur
         if (!AudioSystem.isLineSupported(info)) {
-            System.out.println("System is not supported...");
-        }
+        	System.out.println("System is not supported...");
+        	}
         
         // Obtain and open the line.
         try {
@@ -122,7 +125,8 @@ public class CaptureSon implements Runnable{
     }
     private void getDataFromCapture() {
         // Read the next chunk of EchantillonSignalData from the TargetDataLine.
-    	System.out.println("2.3-capturing ->EchantillonSignalData..");
+    	if (Constantes.DEBUG==1) {System.out.println("2.3-capturing ->EchantillonSignalData..");
+    	}
         if(line!=null) {
             int numBytesRead = line.read(EchantillonSignalData, 0, dataSize);
             // Save this chunk of EchantillonSignalData.
@@ -148,7 +152,8 @@ public class CaptureSon implements Runnable{
         }
     
         Complex[] rawfft=FFT.fft(complexData);
-        System.out.println("2.5-Calcul fft");
+    	if (Constantes.DEBUG==1) {System.out.println("2.5-Calcul fft");
+    	}
         
         // On ne fait que la moitié car l'autre moitié n'est pas interprétable (~ Théorème de Shannon)
         for(int i=0;i<fft.length/2;i++) {
@@ -158,7 +163,8 @@ public class CaptureSon implements Runnable{
     }
 	    
     /**
-     * Parcourt le tableau des pics et met à jour l'amplitude max (max), la fréquence correspondante (maxFreq) et l'indice du tableau de la FFT correspondant
+     * Parcourt le tableau des pics et met à jour l'amplitude max (max), 
+     * la fréquence correspondante (maxFreq) et l'indice du tableau de la FFT correspondant
      */
     private void searchMaxInPeaks() {
     	Son newMaxNote=new Son(0);
@@ -171,8 +177,7 @@ public class CaptureSon implements Runnable{
                 if(NoteFondamentale != null && NoteFondamentale.equals(peaks[i]))
                     updatedOldNote=peaks[i];
             }
-        }
-        
+        }      
         
         if((NoteFondamentale !=null && !NoteFondamentale.equals(newMaxNote)) || NoteFondamentale==null) {
             waitingMaxNote=newMaxNote;
@@ -191,12 +196,15 @@ public class CaptureSon implements Runnable{
             }
             
         }
-     	System.out.println("2.10-Not Max ou fondamental.."+NoteFondamentale.GetNomNote());
+    	if (Constantes.DEBUG==1) {System.out.println("2.10-Note Max ou fondamental.."+NoteFondamentale.GetNomNote());
+        }
     }
     /**
      * la méthode permettant de séparer des notes utilisée pour pouvoir ensuite afficher les notes dans le scorePanel
      **/
     private void fireNoteChanged() {
+    	if (Constantes.DEBUG==1) {System.out.println("2.11-Affiche Note..");
+    	}
         if(AlEcouteDuSon!=null) {
         	AlEcouteDuSon.onNewNote(NoteFondamentale);
         }
@@ -207,7 +215,8 @@ public class CaptureSon implements Runnable{
      * Recherche le maximum de la FFT
     */
     private void searchMax() {
-    	System.out.println("2.7 searchMax");
+    	if (Constantes.DEBUG==1) {System.out.println("2.7 searchMax");
+    	}
     	double newMax=0;
         for(int i=0;i<fft.length/2;i++) {
             if(fft[i]>newMax) {
@@ -221,7 +230,8 @@ public class CaptureSon implements Runnable{
      * Ajoute la FFT actuelle à l'historique et fait la moyenne temporelle des FFT
      */
     private void averageFFT() {
-    	System.out.println("2.6 averageFFT");
+    	if (Constantes.DEBUG==1) {System.out.println("2.6 averageFFT");
+    	}
     	lastFFTs[lastFFTindex]=fft;
         double[] averageFFT=new double[lastFFTs[0].length];
         for(int i=0;i<lastFFTs[0].length;i++) {
@@ -241,7 +251,8 @@ public class CaptureSon implements Runnable{
      * @param threshold Valeur de seuil pour qu'un pic soit pris en compte
      */
     private void peaksIndexation(double[] fft, boolean parabolic, double threshold) {
-    	System.out.println("2.8 peaksIndexation");
+    	if (Constantes.DEBUG==1) {System.out.println("2.8 peaksIndexation");
+    	}
     	peaks=new Son[fft.length];
         for(int i=1;i<fft.length-1;i++) {
             if(fft[i]>threshold) {
@@ -278,7 +289,8 @@ public class CaptureSon implements Runnable{
      * @param window Le tableau où sera écrit la fenêtre
      */
     private void buildGaussianWindow(double[] Spectre) {
-    	System.out.println("1.2 Initialize fenêtre gaussienne FenetreGaussienne");
+    	if (Constantes.DEBUG==1) {System.out.println("1.2 Initialize fenêtre gaussienne FenetreGaussienne");
+    	}
     	int n=Spectre.length;
         double sigma=0.01*n;
         for(int i = 0; i<Spectre.length;i++)
@@ -292,7 +304,8 @@ public class CaptureSon implements Runnable{
      */
     private double[] Fenetrage( double[] Fenetre, byte[] Spectre ) {
         double [] signalTransforme=new double[dataSize];
-        System.out.println("2.4 Fenetrage");
+    	if (Constantes.DEBUG==1) {System.out.println("2.4 Fenetrage");
+    	}
         for(int i = 0; i<Spectre.length;i++)
         	signalTransforme[i] = Spectre[i]*Fenetre[i] ;
         return signalTransforme;
@@ -303,7 +316,8 @@ public class CaptureSon implements Runnable{
      * Fatal en cas de bruit dans les faibles fréquences et inefficace contre les inharmonies
      */
     private void CLeanPeak() {
-    	System.out.println("2.8-Nettoyage Pic..");       
+    	if (Constantes.DEBUG==1) {System.out.println("2.8-Nettoyage Pic..");
+    	}
     	for(int i=0;i<peaks.length;i++) {
             if(peaks[i]!=null) {
                 for(int j=i+1;j<peaks.length;j++) {
@@ -333,16 +347,17 @@ public class CaptureSon implements Runnable{
      */
     @Override
     public void run() {
-    	System.out.println("2.1-Lancement capturing...");
+    	if (Constantes.DEBUG==1) {System.out.println("2.1-Lancement capturing...");
+    	}
     	beginAudioCapture();
         while(isRec) {
             getDataFromCapture();
             //movingAverage(data);
                  
             signalAanalyser=Fenetrage(FenetreGaussienne,EchantillonSignalData);
-            doFFT(signalAanalyser);
+            doFFT(signalAanalyser); // remplissage fft[]
             averageFFT();
-            searchMax();
+            searchMax(); // max dans fft[]
             peaksIndexation(fft,true,(double)max/snr);
             CLeanPeak();
             searchMaxInPeaks();
@@ -365,7 +380,8 @@ public class CaptureSon implements Runnable{
      * Enclenche l'arrêt de l'enregistrement (donc du thread)
      */
     public void stopRecording() {
-        System.out.println("Stop capturing...");
+    	if (Constantes.DEBUG==1) {System.out.println("Stop capturing...");
+    	}
         isRec=false;
     }
     

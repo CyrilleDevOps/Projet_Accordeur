@@ -1,34 +1,13 @@
 //package net.codejava.analyse;
 
-public class Son extends Note {
+public class Son {
 	
 	protected final double intensity;
 	protected double frequency;
 	
-	/**
-     * Fréquence du La de référence
-     */
-    public static int aFreqRef=440; 
-	
-    public Son() {
+	public Son() {
 		intensity=0;
-		
 	}
-	
-    public Son(double freq) {
-    	super(freq);
-    	intensity=0;
-    	frequency=freq;
-    	System.out.println("x- Init Son");
-    }
-    
-    
-	public Son(double freq, double i) {
-		super(freq);
-		intensity=i;
-		frequency=freq;
-		System.out.println("x- Init Son");
-    }
 
 	 /**
      * Retourne l'intensitÃ© de la note
@@ -58,6 +37,8 @@ public class Son extends Note {
            s="#";  
        return s;
    }
+   
+   
    
    
 	

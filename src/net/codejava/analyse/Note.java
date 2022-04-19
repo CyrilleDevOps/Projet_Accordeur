@@ -23,7 +23,7 @@ public class Note {
         	}
         	for (int i=0; i<notes.length; i++) {
                 for (int j=1; j<5 ; j++){
-                	if (Constantes.DEBUG<=2 && Constantes.DEBUG!=0) {System.out.println("x- Init Note"+(notes[i]*j-frequence));
+                	if (Constantes.DEBUG>2 && Constantes.DEBUG!=0) {System.out.println("x- Init Note"+(notes[i]*j-frequence));
                 	}
                 		calculOctave=Math.pow(2,j);
                         if ( (Math.abs(notes[i]-frequence/calculOctave)<ecart ) ){
@@ -58,15 +58,28 @@ public class Note {
             String getAccordType ="Bof";
             int[] AccordType= { 0, 0 };
             
-            AccordType[0] = Math.abs(Accords[1].getNoteID()-Accords[0].getNoteID());
-            AccordType[1] = Math.abs(Accords[2].getNoteID()-Accords[1].getNoteID());
+            if (Accords[0].getNoteID()<=Accords[1].getNoteID()) {
+            	AccordType[0] = Math.abs(Accords[1].getNoteID()-Accords[0].getNoteID());
+			} else {
+				AccordType[0] = Math.abs(Accords[1].getNoteID()-Accords[0].getNoteID()+12);
+			  }
             
+            if (Accords[0].getNoteID()<=Accords[2].getNoteID()) {
+                AccordType[1] = Math.abs(Accords[2].getNoteID()-Accords[0].getNoteID());
+			} else {
+	            AccordType[1] = Math.abs(Accords[2].getNoteID()-Accords[0].getNoteID()+12);
+			  }
+
+            
+            if (Constantes.DEBUG==0) {System.out.println("x- Cherche Accord : {"+AccordType[0]+","+AccordType[1]+"}");
+            }
             boolean AccordTrouve =false;
             int IndiceAccord =0;
             int MaxIndiceAccord =5;
             
             while (AccordTrouve == false && IndiceAccord<=MaxIndiceAccord) {
-            	if (AccordType == RefAccord[IndiceAccord]) {
+            	if (AccordType[0] == RefAccord[IndiceAccord][0] && 
+            			AccordType[1] == RefAccord[IndiceAccord][1]) {
             		AccordTrouve=true;
             	} 	else {
             		IndiceAccord++;

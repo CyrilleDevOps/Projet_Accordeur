@@ -59,7 +59,7 @@ public class PanelCaptureSon extends JFrame implements ActionListener,WindowList
     	if(note!=null){
     		if (Constantes.DEBUG==1) {System.out.println("ecoute Note  "+note.getNoteID());
     		}
-    		if(note.getNoteID()!=0){
+    		if(note.getNoteID()>=0){
 	    		
     			if (Constantes.DEBUG==1) {System.out.println("x- Affichage Frequence Fondamentale "+note.getFrequency()+"-"+note.GetEcartNote());
     			}

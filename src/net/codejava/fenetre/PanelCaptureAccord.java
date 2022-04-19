@@ -66,7 +66,7 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     	if(noteAccord!=null){
     		if (Constantes.DEBUG==1) {System.out.println("ecoute Accord  "+indiceAccord);
     		}
-    		if(noteAccord.getNoteID()!=0){
+    		if(noteAccord.getNoteID()>=0){
     			if (Constantes.DEBUG==1) {System.out.println("Accord- Affichage Frequence Fondamentale "+noteAccord.GetNomNote()+"-"+noteAccord.GetEcartNote());
     			}
     			

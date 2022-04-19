@@ -8,11 +8,11 @@ import java.io.*;
 
 public class Note {
 	
-	protected double [] notes = {110 , 116.55, 123.47 , 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65};
-	protected String [] nom= {"La" , "Sib", "Si" , "Do", "Do#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol","Sol#"};
+	protected double [] notes = { 65.406, 69.296, 73.416, 77.782, 82.407, 87.307, 92.4986, 98, 103.826, 110 , 116.55, 123.47};
+	protected String [] nom= { "Do", "Do#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol","Sol#","La" , "Sib", "Si" };
 	protected int indexNote=0; 
-	protected int octave=0; //
-	protected double ecart=5;
+	protected int octave=2; //
+	protected double ecart=3;
         
         
         public Note() {}
@@ -30,7 +30,7 @@ public class Note {
                         	if (Constantes.DEBUG==1) {System.out.println("*****Note :" + nom[i]+" Octave : "+j);
                            	}
                         	indexNote=i;
-                        	octave=j;
+                        	octave=octave+j;
                         	ecart=notes[i]-frequence/calculOctave ;                           
                         }  
 

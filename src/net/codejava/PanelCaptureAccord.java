@@ -1,8 +1,8 @@
-//package net.codejava.fenetre;
+package net.codejava.fenetre;
 
-//import net.codejava.actions.*;
-//import net.codejava.analyse.*;
-//import net.codejava.start.Constantes;
+import net.codejava.actions.*;
+import net.codejava.analyse.*;
+import net.codejava.start.Constantes;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -18,15 +18,15 @@ import javax.swing.*;
 
 public class PanelCaptureAccord extends JFrame implements ActionListener,WindowListener {
 	
-	// DÃ©but Declaration
+	// Début Declaration
 	
 	public static int FPS=30; // le nombre d'images par seconde
-	public static int FrequenceEchantillonage=44100; //FrÃ©quence d'Ã©chantillonnage
+	public static int FrequenceEchantillonage=44100; //Fréquence d'échantillonnage
 	public static int frequence; 
 	public static Mixer.Info miAccord; //Audio Device
 		
-	private Note noteAccord; //la son captÃ© par le micro
-    private CaptureSon FluxEcouterAccord; //la frÃ©quence dÃ©tectÃ©e par le micro
+	private Note noteAccord; //la son capté par le micro
+    private CaptureSon FluxEcouterAccord; //la fréquence détectée par le micro
     private EcouteMusique AlEcouteDuSonAccord;
     private Thread ThreadAccord; // le flux Audio
 		
@@ -46,9 +46,11 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     
     private JLabel noteNameLabel, accordLabel, AccordNmoins1, AccordNmoins2;
     private JLabel TypeAccordNmoins1,TypeAccordNmoins2;
+    
+    protected JButton   boutonRaz; //Bouton Raz
 
     
-    //Fin DÃ©claration
+    //Fin Déclaration
 	
   
     // Ouvre une fenetre pour l'accordeur
@@ -60,68 +62,77 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     
     @Override
     public void actionPerformed(ActionEvent Evenement) {
-    	//fft=FrequenceEcouter.getFFT();
-    	noteAccord=FluxEcouterAccord.GetNoteFondamentale();
-    	//System.out.println("ecoute Accord  ");
-    	if(noteAccord!=null){
-    		if (Constantes.DEBUG==1) {System.out.println("ecoute Accord  "+indiceAccord);
-    		}
-    		if(noteAccord.getNoteID()!=0){
-    			if (Constantes.DEBUG==1) {System.out.println("Accord- Affichage Frequence Fondamentale "+noteAccord.GetNomNote()+"-"+noteAccord.GetEcartNote());
-    			}
-    			
-	    		if (indiceAccord==0 ) {		    		
-		    		Accords[0]=noteAccord;
-		    		indiceAccord=1;
-		    		accordAffichage = noteAccord.GetNomNote();
-		    	} else {
-		    		if (noteAccord.GetNomNote()!=Accords[indiceAccord-1].GetNomNote()) {		    		
-			    		Accords[indiceAccord]=noteAccord;
-			    		indiceAccord=indiceAccord+1;
-			    		accordAffichage = accordAffichage+"/"+noteAccord.GetNomNote();
-			    		if (indiceAccord == accordsNbNotes)  {
-			    			indiceAccord = 0;
-			    			
-			    			if (indiceAccordN ==2){
-			    				accordAffichageN2 =accordAffichage;
-			    				accordTypeN2= noteAccord.getAccordType(Accords);
-			    				indiceAccordN=1;
-			    			}
-			    			if (indiceAccordN ==1){
-			    				accordAffichageN2 =accordAffichageN1;
-			    				accordTypeN2= accordTypeN1;
-			    				accordAffichageN1 =accordAffichage;
-			    				accordTypeN1= noteAccord.getAccordType(Accords);
-			    				indiceAccordN=2;
-			    			}
-			    			
-			    		}
-		    		}
-		    	}
-	           	noteNameLabel.setText((noteAccord.getNoteID()!=0) ? noteAccord.GetNomNote() : "Joue une note !");
-	           	accordLabel.setText(accordAffichage);
-	
-	           	AccordNmoins1.setText(accordAffichageN1);
-	           	AccordNmoins2.setText(accordAffichageN2 );
-	           	
-	           	TypeAccordNmoins1.setText(accordTypeN1);
-	           	TypeAccordNmoins2.setText(accordTypeN2);
-	           	
-	           	
-	            noteNameLabel.setForeground(new Color(0, 202, 0));
-	            accordLabel.setForeground(new Color(0, 202, 0));
-	            
-	            //AccordNmoins1.setForeground(new Color(0, 202, 0));
-	            //AccordNmoins2.setForeground(new Color(0, 202, 0));
-	            
-	            repaint();
-    		}
-        }
 
+    	Object source = Evenement.getSource(); // L'objet qui a appelÃ© l'Ã©vÃ©nement
+    	if(source == boutonRaz) {
+    		accordAffichage="";
+    		indiceAccord = 0;
+    		noteNameLabel.setText((noteAccord.getNoteID()!=0) ? noteAccord.GetNomNote() : "Joue une note !");
+           	accordLabel.setText(accordAffichage);
+           	repaint();
+    	} else {    	
+	    	//fft=FrequenceEcouter.getFFT();
+	    	noteAccord=FluxEcouterAccord.GetNoteFondamentale();
+	    	//System.out.println("ecoute Accord  ");
+	    	if(noteAccord!=null){
+	    		if (Constantes.DEBUG==1) {System.out.println("ecoute Accord  "+indiceAccord);
+	    		}
+	    		if(noteAccord.getNoteID()>0){
+	    			if (Constantes.DEBUG==1) {System.out.println("Accord- Affichage Frequence Fondamentale "+noteAccord.GetNomNote()+"-"+noteAccord.GetEcartNote());
+	    			}
+	    			
+		    		if (indiceAccord==0 ) {		    		
+			    		Accords[0]=noteAccord;
+			    		indiceAccord=1;
+			    		accordAffichage = noteAccord.GetNomNote();
+			    	} else {
+			    		if (noteAccord.GetNomNote()!=Accords[indiceAccord-1].GetNomNote()) {		    		
+				    		Accords[indiceAccord]=noteAccord;
+				    		indiceAccord=indiceAccord+1;
+				    		accordAffichage = accordAffichage+"/"+noteAccord.GetNomNote();
+				    		if (indiceAccord == accordsNbNotes)  {
+				    			indiceAccord = 0;
+				    			
+				    			if (indiceAccordN ==2){
+				    				accordAffichageN2 =accordAffichage;
+				    				accordTypeN2= noteAccord.getAccordType(Accords);
+				    				indiceAccordN=1;
+				    			}
+				    			if (indiceAccordN ==1){
+				    				accordAffichageN2 =accordAffichageN1;
+				    				accordTypeN2= accordTypeN1;
+				    				accordAffichageN1 =accordAffichage;
+				    				accordTypeN1= noteAccord.getAccordType(Accords);
+				    				indiceAccordN=2;
+				    			}
+				    			
+				    		}
+			    		}
+			    	}
+		           	noteNameLabel.setText((noteAccord.getNoteID()!=0) ? noteAccord.GetNomNote() : "Joue une note !");
+		           	accordLabel.setText(accordAffichage);
+		
+		           	AccordNmoins1.setText(accordAffichageN1);
+		           	AccordNmoins2.setText(accordAffichageN2 );
+		           	
+		           	TypeAccordNmoins1.setText(accordTypeN1);
+		           	TypeAccordNmoins2.setText(accordTypeN2);
+		           	
+		           	
+		            noteNameLabel.setForeground(new Color(0, 202, 0));
+		            accordLabel.setForeground(new Color(0, 202, 0));
+		            
+		            //AccordNmoins1.setForeground(new Color(0, 202, 0));
+		            //AccordNmoins2.setForeground(new Color(0, 202, 0));
+		            
+		            repaint();
+	    		}
+	    	}
+    	}
     }
-    
-    
-    private void init() { //pour ÃƒÂ©viter de mettre des fonctions surchargeables telles setSize() dans le constructeur
+  
+       
+    private void init() { //pour Ã©viter de mettre des fonctions surchargeables telles setSize() dans le constructeur
           
     	if (Constantes.DEBUG==1) {System.out.println("1-Mise en ecoute Accord");
     	}
@@ -129,11 +140,11 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     	// On initialise la frequence
     	FluxEcouterAccord=new CaptureSon(FrequenceEchantillonage,8,FrequenceEchantillonage/8,miAccord,AlEcouteDuSonAccord);
     	Accords=new Son[accordsNbNotes];   	
-    	// On set la taille de la fenÃƒÂªtre et on affiche les bordures
+    	// On set la taille de la fenÃªtre et on affiche les bordures
        setSize(400,600);
        setUndecorated(false);
         
-        // Un timer pour rafraÃƒÂ®chir l'affichage
+        // Un timer pour rafraÃ®chir l'affichage
         Timer timer = new Timer(1000/FPS, this);
         timer.start();
         
@@ -164,7 +175,7 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
         textPanel2.setBackground(Color.white);
         textPanel2.setOpaque(true);
         
-        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
+        // Le petit JLabel juste en dessous qui contient la fréquence détectée
         accordLabel=new JLabel("-",SwingConstants.CENTER);
         accordLabel.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(accordLabel,textPanel2);
@@ -179,12 +190,12 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
         textPanel3.setBackground(Color.white);
         textPanel3.setOpaque(true);
         
-        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
+        // Le petit JLabel juste en dessous qui contient la fréquence détectée
         AccordNmoins1=new JLabel("---",SwingConstants.CENTER);
         AccordNmoins1.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(AccordNmoins1,textPanel3);
         
-     // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
+     // Le petit JLabel juste en dessous qui contient la fréquence détectée
         TypeAccordNmoins1=new JLabel("-",SwingConstants.CENTER);
         TypeAccordNmoins1.setFont(new Font("Trebuchet MS",Font.PLAIN,10)); // Petite police
         addCenteredPanel(TypeAccordNmoins1,textPanel3);
@@ -199,18 +210,31 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
         textPanel4.setBackground(Color.white);
         textPanel4.setOpaque(true);
         
-        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
+        // Le petit JLabel juste en dessous qui contient la fréquence détectée
         AccordNmoins2=new JLabel("---",SwingConstants.CENTER);
         AccordNmoins2.setFont(new Font("Trebuchet MS",Font.PLAIN,40)); // Grosse police
         addCenteredPanel(AccordNmoins2,textPanel4);
         
-        // Le petit JLabel juste en dessous qui contient la frÃ©quence dÃ©tectÃ©e
+        // Le petit JLabel juste en dessous qui contient la fréquence détectée
         TypeAccordNmoins2=new JLabel("-",SwingConstants.CENTER);
         TypeAccordNmoins2.setFont(new Font("Trebuchet MS",Font.PLAIN,10)); // Petite police
         addCenteredPanel(TypeAccordNmoins2,textPanel4);
 		
 		addCenteredPanel(textPanel4,verticalBox);
-	    		
+		
+		//**********************
+		//Ajout des Bouton Raz
+		//**********************
+				
+		boutonRaz = new JButton();
+		boutonRaz.setText("RAZ");
+		boutonRaz.setBackground(new Color(10, 144, 10));
+		boutonRaz.setForeground(Color.black);
+		boutonRaz.addActionListener(this);
+		
+		addCenteredPanel(boutonRaz,verticalBox);
+	    
+		
 		Box horizontalBox=Box.createHorizontalBox();
 		horizontalBox.add(Box.createRigidArea(new Dimension(20,0)));
 		horizontalBox.add(verticalBox);
@@ -218,11 +242,15 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
 				
 		add(horizontalBox);
 		
+		
+		
+		
+		
 				
 		//activation lisener
 		addWindowListener(this);
 		
-		// Affichage de la fenÃƒÂªtre
+		// Affichage de la fenÃªtre
         setVisible(true);
     }
     
@@ -239,6 +267,7 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
         
         box.add(panel);
     }
+    
     @Override
     public void windowDeactivated(WindowEvent w) {
     	FluxEcouterAccord.stopRecording();
@@ -248,7 +277,7 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     public void windowActivated(WindowEvent w) {
     	if (Constantes.DEBUG==1) {
     		System.out.println("2-Active Window Accord");
-    		System.out.println("2-DÃ©but ecoute Lancement du Flux Accord");
+    		System.out.println("2-Début ecoute Lancement du Flux Accord");
     	}
     	ThreadAccord=new Thread(FluxEcouterAccord);
     	ThreadAccord.start();

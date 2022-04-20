@@ -12,7 +12,7 @@ import javax.sound.sampled.*;
 
 	/**
 	 *
-	 * @author ScoriusTeam
+	 * @author GreatTeam
 	 */
 	public class start extends JFrame {
 

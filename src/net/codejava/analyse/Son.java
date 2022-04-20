@@ -1,6 +1,4 @@
-//package net.codejava.analyse;
-
-//import net.codejava.start.Constantes;
+package net.codejava.analyse;
 
 import net.codejava.start.Constantes;
 
@@ -10,7 +8,7 @@ public class Son extends Note {
 	protected double frequency;
 	
 	/**
-     * FrÃ©quence du La de rÃ©fÃ©rence
+     * Fréquence du La de référence
      */
     public static int aFreqRef=440; 
 	
@@ -37,24 +35,24 @@ public class Son extends Note {
     }
 
 	 /**
-     * Retourne l'intensitÃ© de la note
-     * @return intensitÃ© sous forme de double positif
+     * Retourne l'intensité de la note
+     * @return intensité sous forme de double positif
      */
     public double getIntensity() {
         return intensity;
     }
     
     /**
-     * Retourne la frÃ©quence de la Note
-     * @return frÃ©quence sous forme de double
+     * Retourne la fréquence de la Note
+     * @return fréquence sous forme de double
      */
     public double getFrequency() {
         return frequency;
     }
 	
     /**
-    * Retourne la frÃ©quence de la Note
-    * @return frÃ©quence sous forme de double
+    * Retourne la fréquence de la Note
+    * @return fréquence sous forme de double
     */
    public String getSilence() {
 	   String s;

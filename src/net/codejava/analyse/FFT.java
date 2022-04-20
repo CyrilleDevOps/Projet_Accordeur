@@ -1,4 +1,4 @@
-//package net.codejava.analyse;
+package net.codejava.analyse;
 /******************************************************************************
  *  Compilation:  javac FFT.java
  *  Execution:    java FFT n

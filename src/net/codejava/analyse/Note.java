@@ -8,8 +8,8 @@ import java.io.*;
 
 public class Note {
 	
-	protected double [] notes = { 65.406, 69.296, 73.416, 77.782, 82.407, 87.307, 92.4986, 98, 103.826, 110 , 116.55, 123.47};
-	protected String [] nom= { "Do", "Do#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol","Sol#","La" , "Sib", "Si" };
+	protected double [] notes = {0,65.406, 69.296, 73.416, 77.782, 82.407, 87.307, 92.4986, 98, 103.826, 110 , 116.55, 123.47};
+	protected String [] nom= { null,"Do", "Do#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol","Sol#","La" , "Sib", "Si" };
 	protected int indexNote=0; 
 	protected int octave=2; //
 	protected double ecart=3;
@@ -71,7 +71,7 @@ public class Note {
 			  }
 
             
-            if (Constantes.DEBUG==0) {System.out.println("x- Cherche Accord : {"+AccordType[0]+","+AccordType[1]+"}");
+            if (Constantes.DEBUG==1) {System.out.println("x- Cherche Accord : {"+AccordType[0]+","+AccordType[1]+"}");
             }
             boolean AccordTrouve =false;
             int IndiceAccord =0;

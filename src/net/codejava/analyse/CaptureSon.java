@@ -169,7 +169,7 @@ public class CaptureSon implements Runnable{
     private void searchMaxInPeaks() {
     	Son newMaxNote=new Son(0);
         Son updatedOldNote=null;
-        
+        NoteFondamentale = null;
         for(int i=0;i<peaks.length/2;i++) {
             if(peaks[i]!= null && peaks[i].getIntensity()>newMaxNote.getIntensity()) {
                 newMaxNote=peaks[i];

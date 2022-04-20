@@ -46,6 +46,8 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     
     private JLabel noteNameLabel, accordLabel, AccordNmoins1, AccordNmoins2;
     private JLabel TypeAccordNmoins1,TypeAccordNmoins2;
+    
+    protected JButton   boutonRaz; //Bouton Raz
 
     
     //Fin D�claration
@@ -60,67 +62,76 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
     
     @Override
     public void actionPerformed(ActionEvent Evenement) {
-    	//fft=FrequenceEcouter.getFFT();
-    	noteAccord=FluxEcouterAccord.GetNoteFondamentale();
-    	//System.out.println("ecoute Accord  ");
-    	if(noteAccord!=null){
-    		if (Constantes.DEBUG==1) {System.out.println("ecoute Accord  "+indiceAccord);
-    		}
-    		if(noteAccord.getNoteID()>=0){
-    			if (Constantes.DEBUG==1) {System.out.println("Accord- Affichage Frequence Fondamentale "+noteAccord.GetNomNote()+"-"+noteAccord.GetEcartNote());
-    			}
-    			
-	    		if (indiceAccord==0 ) {		    		
-		    		Accords[0]=noteAccord;
-		    		indiceAccord=1;
-		    		accordAffichage = noteAccord.GetNomNote();
-		    	} else {
-		    		if (noteAccord.GetNomNote()!=Accords[indiceAccord-1].GetNomNote()) {		    		
-			    		Accords[indiceAccord]=noteAccord;
-			    		indiceAccord=indiceAccord+1;
-			    		accordAffichage = accordAffichage+"/"+noteAccord.GetNomNote();
-			    		if (indiceAccord == accordsNbNotes)  {
-			    			indiceAccord = 0;
-			    			
-			    			if (indiceAccordN ==2){
-			    				accordAffichageN2 =accordAffichage;
-			    				accordTypeN2= noteAccord.getAccordType(Accords);
-			    				indiceAccordN=1;
-			    			}
-			    			if (indiceAccordN ==1){
-			    				accordAffichageN2 =accordAffichageN1;
-			    				accordTypeN2= accordTypeN1;
-			    				accordAffichageN1 =accordAffichage;
-			    				accordTypeN1= noteAccord.getAccordType(Accords);
-			    				indiceAccordN=2;
-			    			}
-			    			
-			    		}
-		    		}
-		    	}
-	           	noteNameLabel.setText((noteAccord.getNoteID()!=0) ? noteAccord.GetNomNote() : "Joue une note !");
-	           	accordLabel.setText(accordAffichage);
-	
-	           	AccordNmoins1.setText(accordAffichageN1);
-	           	AccordNmoins2.setText(accordAffichageN2 );
-	           	
-	           	TypeAccordNmoins1.setText(accordTypeN1);
-	           	TypeAccordNmoins2.setText(accordTypeN2);
-	           	
-	           	
-	            noteNameLabel.setForeground(new Color(0, 202, 0));
-	            accordLabel.setForeground(new Color(0, 202, 0));
-	            
-	            //AccordNmoins1.setForeground(new Color(0, 202, 0));
-	            //AccordNmoins2.setForeground(new Color(0, 202, 0));
-	            
-	            repaint();
-    		}
-        }
 
+    	Object source = Evenement.getSource(); // L'objet qui a appelé l'événement
+    	if(source == boutonRaz) {
+    		accordAffichage="";
+    		indiceAccord = 0;
+    		noteNameLabel.setText((noteAccord.getNoteID()!=0) ? noteAccord.GetNomNote() : "Joue une note !");
+           	accordLabel.setText(accordAffichage);
+           	repaint();
+    	} else {    	
+	    	//fft=FrequenceEcouter.getFFT();
+	    	noteAccord=FluxEcouterAccord.GetNoteFondamentale();
+	    	//System.out.println("ecoute Accord  ");
+	    	if(noteAccord!=null){
+	    		if (Constantes.DEBUG==1) {System.out.println("ecoute Accord  "+indiceAccord);
+	    		}
+	    		if(noteAccord.getNoteID()>0){
+	    			if (Constantes.DEBUG==1) {System.out.println("Accord- Affichage Frequence Fondamentale "+noteAccord.GetNomNote()+"-"+noteAccord.GetEcartNote());
+	    			}
+	    			
+		    		if (indiceAccord==0 ) {		    		
+			    		Accords[0]=noteAccord;
+			    		indiceAccord=1;
+			    		accordAffichage = noteAccord.GetNomNote();
+			    	} else {
+			    		if (noteAccord.GetNomNote()!=Accords[indiceAccord-1].GetNomNote()) {		    		
+				    		Accords[indiceAccord]=noteAccord;
+				    		indiceAccord=indiceAccord+1;
+				    		accordAffichage = accordAffichage+"/"+noteAccord.GetNomNote();
+				    		if (indiceAccord == accordsNbNotes)  {
+				    			indiceAccord = 0;
+				    			
+				    			if (indiceAccordN ==2){
+				    				accordAffichageN2 =accordAffichage;
+				    				accordTypeN2= noteAccord.getAccordType(Accords);
+				    				indiceAccordN=1;
+				    			}
+				    			if (indiceAccordN ==1){
+				    				accordAffichageN2 =accordAffichageN1;
+				    				accordTypeN2= accordTypeN1;
+				    				accordAffichageN1 =accordAffichage;
+				    				accordTypeN1= noteAccord.getAccordType(Accords);
+				    				indiceAccordN=2;
+				    			}
+				    			
+				    		}
+			    		}
+			    	}
+		           	noteNameLabel.setText((noteAccord.getNoteID()!=0) ? noteAccord.GetNomNote() : "Joue une note !");
+		           	accordLabel.setText(accordAffichage);
+		
+		           	AccordNmoins1.setText(accordAffichageN1);
+		           	AccordNmoins2.setText(accordAffichageN2 );
+		           	
+		           	TypeAccordNmoins1.setText(accordTypeN1);
+		           	TypeAccordNmoins2.setText(accordTypeN2);
+		           	
+		           	
+		            noteNameLabel.setForeground(new Color(0, 202, 0));
+		            accordLabel.setForeground(new Color(0, 202, 0));
+		            
+		            //AccordNmoins1.setForeground(new Color(0, 202, 0));
+		            //AccordNmoins2.setForeground(new Color(0, 202, 0));
+		            
+		            repaint();
+	    		}
+	    	}
+    	}
     }
-    
-    
+  
+       
     private void init() { //pour éviter de mettre des fonctions surchargeables telles setSize() dans le constructeur
           
     	if (Constantes.DEBUG==1) {System.out.println("1-Mise en ecoute Accord");
@@ -210,13 +221,30 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
         addCenteredPanel(TypeAccordNmoins2,textPanel4);
 		
 		addCenteredPanel(textPanel4,verticalBox);
-	    		
+		
+		//**********************
+		//Ajout des Bouton Raz
+		//**********************
+				
+		boutonRaz = new JButton();
+		boutonRaz.setText("RAZ");
+		boutonRaz.setBackground(new Color(10, 144, 10));
+		boutonRaz.setForeground(Color.black);
+		boutonRaz.addActionListener(this);
+		
+		addCenteredPanel(boutonRaz,verticalBox);
+	    
+		
 		Box horizontalBox=Box.createHorizontalBox();
 		horizontalBox.add(Box.createRigidArea(new Dimension(20,0)));
 		horizontalBox.add(verticalBox);
 		horizontalBox.add(Box.createRigidArea(new Dimension(20,0)));
 				
 		add(horizontalBox);
+		
+		
+		
+		
 		
 				
 		//activation lisener
@@ -239,6 +267,7 @@ public class PanelCaptureAccord extends JFrame implements ActionListener,WindowL
         
         box.add(panel);
     }
+    
     @Override
     public void windowDeactivated(WindowEvent w) {
     	FluxEcouterAccord.stopRecording();

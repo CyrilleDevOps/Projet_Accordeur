@@ -23,7 +23,7 @@ import java.awt.Dimension;
 	   
    
 	    private void init() {
-	        setTitle("Accordeur");
+	        setTitle("Accordeur & Accord");
 	        setMinimumSize(new Dimension(1100, 700));
 	        
 	        // La barre de menus

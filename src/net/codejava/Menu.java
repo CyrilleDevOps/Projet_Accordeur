@@ -16,7 +16,7 @@ import javax.sound.sampled.*;
 
 /**
  *
- * @author ScoriusTeam
+ * @author GreatTeam
  */
 public class Menu extends JFrame implements ActionListener {
 	

@@ -1,4 +1,4 @@
-package net.codejava.fenetre;
+//package net.codejava.fenetre;
 
 	/**
 	 * Mise en place du menu principal
@@ -15,7 +15,7 @@ import java.awt.Dimension;
 
 
 	    /**
-	     * Création et ouverture du Menu principal
+	     * CrÃ©ation et ouverture du Menu principal
 	     */
 	    public MenuPrincipal() {
 	        init();
@@ -60,7 +60,7 @@ import java.awt.Dimension;
 	        PanelBoutons.setMaximumSize(new Dimension(Integer.MAX_VALUE,200));
 	        
 	        //Ajout des boutons
-	        // buttonTuner : Le bouton pour accéder à l'accordeur
+	        // buttonTuner : Le bouton pour accÃ©der Ã  l'accordeur
 	        bouton1 = new JButton();
 	        bouton1.setText("Accordeur");
 	        bouton1.setBackground(new Color(10, 144, 10));
